@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
   */
     try {
       const tagData = await Tag.create(req.body);
-      res.status(200).json({ message: `New tag ${tagData.tag_name} successfully created!` });
+      res.status(200).json({ message: `New tag: ${tagData.tag_name} successfully created!` });
       }
       catch(err) {
         console.log(err);
@@ -61,7 +61,7 @@ router.put('/:id', async (req, res) => {
       return;
     }
 
-    res.status(200).json({ message: `Tag has been successfully updated!` });
+    res.status(200).json({ message: `${req.body.tag_name} tag has been successfully updated!` });
     } catch(err) {
       console.log(err);
       res.status(500).json(err);
@@ -71,6 +71,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
   try {
+    const tagName = await Tag.findByPk(req.params.id);
     const tagData = await Tag.destroy({ where: { id: req.params.id } });
 
     if (!tagData) {
@@ -78,7 +79,7 @@ router.delete('/:id', async (req, res) => {
       return;
     }
 
-    res.status(200).json({ message: `Tag has been successfully deleted.` });
+    res.status(200).json({ message: `${tagName.tag_name} tag has been successfully deleted.` });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
